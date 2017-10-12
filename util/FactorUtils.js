@@ -41,13 +41,19 @@ export default {
 
         let value = 0;
         
-        let squareRootPlusOne = Math.floor(Math.sqrt(n)) + 1;
-        for (let i = 1; i <= squareRootPlusOne; i++) {       
+        let limitLowerFactors = Math.floor(Math.sqrt(n));
+        if (n >= 10) {
+            limitLowerFactors + 1;
+        }
+
+        for (let i = 1; i <= limitLowerFactors; i++) {       
             if (n % i === 0) {
                 value = fnSimpleReducer(value, i);
                 if (!excludeSelf || i !== 1)  {
                     let otherFactor = n / i;
-                    value = fnSimpleReducer(value, otherFactor);
+                    if (otherFactor !== i) {
+                        value = fnSimpleReducer(value, otherFactor);
+                    }
                 }
             }
         }
