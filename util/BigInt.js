@@ -19,6 +19,18 @@ export default class BigInt {
         return int.reverse().join('');
     }
 
+    trim() {
+        this.int = trimLeadingZero(this.int);
+    }
+
+    /**
+     * @return {number}
+     */
+    size() {
+        this.trim();
+        return this.int.length;
+    }
+
     /**
      * Take in either a BigInt or number[] and return the number[].
      * Will return a copy of the data.
@@ -132,17 +144,7 @@ export default class BigInt {
             }
         }
 
-        // delete any superflous zeroes from front of our number / end of our array since the number is "backwards" in the array
-        let lastIndex = result.length - 1;
-        let nonZeroFound = false;
-        for (let i = lastIndex; i >= 0 && !nonZeroFound; i--) {
-            if (result[i] === 0) {
-                delete result[i];
-            } else {
-                nonZeroFound = true;
-            }
-        }
-                
+        result = trimLeadingZero(result);
         return new BigInt(result);
     }
 
@@ -170,3 +172,18 @@ function safeAccessPosition(arr, index) {
 
 let _sap = safeAccessPosition;
 
+
+function trimLeadingZero(array) {
+    // delete any superflous zeroes from front of our number / end of our array since the number is "backwards" in the array
+    let lastIndex = array.length - 1;
+    let nonZeroFound = false;
+    for (let i = lastIndex; i >= 0 && !nonZeroFound; i--) {
+        if (array[i] === 0) {            
+            array.pop();
+        } else {
+            nonZeroFound = true;
+        }
+    }
+
+    return array;
+}
